@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+<h2>Article:</h2>
+<ul>
+    <li>{{ article.author }}</li>
+    <li>{{ article.title }}</li>
+    <li>{{ article.content }}</li>
+    <li>{{ article.created_date }}</li>
+    <li>
+        {% if article.image %}
+            <img style="width: 200px; height:200px" src="{{article.image.url}}" alt="">
+        {% endif %}
+    </li>
+</ul>
+
+<!-- Comments Section -->
+<hr>
+<h3>Şərhləri ({{ comments.count }})</h3>
+
+{% if comments %}
+    <div class="comments-section">
+        {% for comment in comments %}
+            <div class="comment" style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                <strong>{{ comment.author }}</strong> 
+                <small style="color: #666;">{{ comment.created_date|date:"d.m.Y H:i" }}</small>
+                <p>{{ comment.content }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p style="color: #999;">Hələ şərh yoxdur. İlk şərhi yazmağa çalışın!</p>
+{% endif %}
+
+{% endblock body %}

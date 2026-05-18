@@ -1,0 +1,33 @@
+from django.db import models
+
+# Create your models here.
+
+
+class Article(models.Model):
+    author = models.ForeignKey("auth.User", on_delete=models.CASCADE, verbose_name="Yazar")
+    title = models.CharField(max_length=150, verbose_name="Başlıq")  # input
+    content = models.TextField(verbose_name="Məzmun")  # textarea
+    created_date = models.DateTimeField(auto_now_add=True)
+    image = models.FileField(upload_to="Article Images",blank=True, null=True,verbose_name="Şəkil")
+
+    def __str__(self):
+        return f"{self.title} | {self.author}"
+
+
+class Comment(models.Model):
+    """
+    Comment modeli - Article-ə ForeignKey ilişkisi
+    One-to-Many ilişki: Bir Article -> Çox Comment
+    """
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments", verbose_name="Məqalə")
+    author = models.CharField(max_length=100, verbose_name="Müəllif")
+    content = models.TextField(verbose_name="Məzmun")
+    created_date = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_date']  
+        verbose_name = "Comment"
+        verbose_name_plural = "Comments"
+    
+    def __str__(self):
+        return f"{self.author} - {self.article.title}"

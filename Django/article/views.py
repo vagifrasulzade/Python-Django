@@ -17,7 +17,6 @@ def articles__view(request):
 # domain/article/1
 def article__detail__view(request, id):
     article = Article.objects.get(id=id)
-    # Article-nin comments-lərini əlavə edirəm
     comments = article.comments.all()
     return render(request, "article_detail.html", {
         "article": article,

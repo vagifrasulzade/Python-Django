@@ -15,19 +15,15 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
-    """
-    Comment modeli - Article-ə ForeignKey ilişkisi
-    One-to-Many ilişki: Bir Article -> Çox Comment
-    """
-    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments", verbose_name="Məqalə")
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments")
     author = models.CharField(max_length=100, verbose_name="Müəllif")
     content = models.TextField(verbose_name="Məzmun")
     created_date = models.DateTimeField(auto_now_add=True)
     
-    class Meta:
-        ordering = ['-created_date']  
-        verbose_name = "Comment"
-        verbose_name_plural = "Comments"
+    # class Meta:
+    #     ordering = ['-created_date']  
+    #     verbose_name = "Comment"
+    #     verbose_name_plural = "Comments"
     
     def __str__(self):
         return f"{self.author} - {self.article.title}"

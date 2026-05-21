@@ -3,22 +3,54 @@
 
 {% block body %}
 
-<h2>Article:</h2>
+<h2>Məqalə:</h2>
 <ul>
-    <li>{{ article.author }}</li>
-    <li>{{ article.title }}</li>
-    <li>{{ article.content }}</li>
-    <li>{{ article.created_date }}</li>
+    <li><strong>Yazar:</strong> {{ article.author }}</li>
+    <li><strong>Başlıq:</strong> {{ article.title }}</li>
+    <li><strong>Məzmun:</strong> {{ article.content }}</li>
+    <li><strong>Tarix:</strong> {{ article.created_date|date:"d.m.Y H:i" }}</li>
+    {% if article.tags.all %}
+        <li><strong>Etiketlər:</strong> 
+            {% for tag in article.tags.all %}
+                <span style="background-color: #e0e0e0; padding: 5px 10px; border-radius: 3px; margin-right: 5px;">{{ tag.name }}</span>
+            {% endfor %}
+        </li>
+    {% endif %}
     <li>
         {% if article.image %}
-            <img style="width: 200px; height:200px" src="{{article.image.url}}" alt="">
+            <img style="width: 200px; height:200px" src="{{article.image.url}}" alt="Məqalə Şəkili">
         {% endif %}
     </li>
 </ul>
 
+<!-- Edit/Delete buttons for author -->
+{% if user == article.author %}
+    <div style="margin: 20px 0;">
+        <a href="{% url 'article-edit' article.id %}" class="btn btn-primary">Redaktə Edin</a>
+        <a href="{% url 'article-delete' article.id %}" class="btn btn-danger">Silin</a>
+    </div>
+{% endif %}
+
 <!-- Comments Section -->
 <hr>
 <h3>Şərhləri ({{ comments.count }})</h3>
+
+<!-- Add Comment Form -->
+<div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin-bottom: 20px;">
+    <h4>Şərh Əlavə Edin</h4>
+    <form method="POST">
+        {% csrf_token %}
+        <div style="margin-bottom: 10px;">
+            <label for="{{ form.author.id_for_label }}">{{ form.author.label }}</label>
+            {{ form.author }}
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="{{ form.content.id_for_label }}">{{ form.content.label }}</label>
+            {{ form.content }}
+        </div>
+        <button type="submit" class="btn btn-success">Şərh Göndər</button>
+    </form>
+</div>
 
 {% if comments %}
     <div class="comments-section">
@@ -33,5 +65,8 @@
 {% else %}
     <p style="color: #999;">Hələ şərh yoxdur. İlk şərhi yazmağa çalışın!</p>
 {% endif %}
+
+<hr>
+<a href="{% url 'articles' %}" class="btn btn-secondary">Məqaləlar</a>
 
 {% endblock body %}

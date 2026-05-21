@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>{{ title }}</h2>
+
+<form method="POST" enctype="multipart/form-data" style="max-width: 600px;">
+    {% csrf_token %}
+    
+    <div style="margin-bottom: 20px;">
+        <label for="{{ form.title.id_for_label }}" style="display: block; margin-bottom: 5px;"><strong>{{ form.title.label }}</strong></label>
+        {{ form.title }}
+        {% if form.title.errors %}
+            <div style="color: red; font-size: 12px;">{{ form.title.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <label for="{{ form.content.id_for_label }}" style="display: block; margin-bottom: 5px;"><strong>{{ form.content.label }}</strong></label>
+        {{ form.content }}
+        {% if form.content.errors %}
+            <div style="color: red; font-size: 12px;">{{ form.content.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <label for="{{ form.image.id_for_label }}" style="display: block; margin-bottom: 5px;"><strong>{{ form.image.label }}</strong></label>
+        {{ form.image }}
+        {% if form.image.errors %}
+            <div style="color: red; font-size: 12px;">{{ form.image.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 5px;"><strong>{{ form.tags.label }}</strong></label>
+        <div style="border: 1px solid #ddd; padding: 10px; max-height: 200px; overflow-y: auto;">
+            {{ form.tags }}
+        </div>
+        {% if form.tags.errors %}
+            <div style="color: red; font-size: 12px;">{{ form.tags.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Yadda Saxla</button>
+    <a href="{% url 'articles' %}" class="btn btn-secondary">Ləğv Et</a>
+</form>
+
+{% endblock body %}

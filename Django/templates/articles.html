@@ -1,23 +1,54 @@
 {% extends "layout.html" %}
 
-{% block page_title %}Articles{% endblock page_title %}
+{% block page_title %}Məqalələr{% endblock page_title %}
 {% block body %}
 
-    <h2>Articles</h2>
+    <h2>Məqalələr</h2>
+    
+    {% if user.is_authenticated %}
+        <div style="margin-bottom: 20px;">
+            <a href="{% url 'article-create' %}" class="btn btn-success">+ Yeni Məqalə Əlavə Edin</a>
+        </div>
+    {% else %}
+        <div style="background-color: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+            <p>Məqalə əlavə etmək üçün <a href="/admin/login/">daxil olun</a></p>
+        </div>
+    {% endif %}
 
     {% if articles %}
-        <ul>
+        <div>
             {% for article in articles %}
-                <li>{{ article.author }}</li>
-                <!-- a href="article-detail/id" -->
-                <li><a href="{% url 'article-detail' article.id %}">{{ article.title }}</a></li>
-                <li>{{ article.content }}</li>
-                <li>{{ article.created_date }}</li>
-                <br> <hr>
+                <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+                    <h3><a href="{% url 'article-detail' article.id %}" style="text-decoration: none; color: #007bff;">{{ article.title }}</a></h3>
+                    <p><strong>Yazar:</strong> {{ article.author }} | <strong>Tarix:</strong> {{ article.created_date|date:"d.m.Y H:i" }}</p>
+                    
+                    {% if article.tags.all %}
+                        <p>
+                            <strong>Etiketlər:</strong>
+                            {% for tag in article.tags.all %}
+                                <span style="background-color: #e0e0e0; padding: 3px 8px; border-radius: 3px; margin-right: 5px; font-size: 12px;">{{ tag.name }}</span>
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                    
+                    <p>{{ article.content|truncatewords:30 }}</p>
+                    
+                    {% if article.image %}
+                        <img style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px; margin: 10px 0;" src="{{ article.image.url }}" alt="Məqalə Şəkili">
+                    {% endif %}
+                    
+                    <p><strong>Şərhlər:</strong> {{ article.comments.count }}</p>
+                    
+                    <a href="{% url 'article-detail' article.id %}" class="btn btn-primary">Oxu</a>
+                    {% if user == article.author %}
+                        <a href="{% url 'article-edit' article.id %}" class="btn btn-warning">Redaktə Et</a>
+                        <a href="{% url 'article-delete' article.id %}" class="btn btn-danger">Sil</a>
+                    {% endif %}
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
-        <p style="color:red;">Heleki hec bir meqale elave olunmayib.</p>
+        <p style="color:red;">Hələki heç bir məqalə əlavə olunmayıb.</p>
     {% endif %}
 
 {% endblock body %}

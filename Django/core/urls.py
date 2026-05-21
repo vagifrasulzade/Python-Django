@@ -26,7 +26,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", views.home__view),
     path("articles/", views.articles__view, name="articles"),
-    path("article-detail/<int:id>", views.article__detail__view, name="article-detail")
+    path("article-detail/<int:id>", views.article__detail__view, name="article-detail"),
+    path("article/create/", views.article_create__view, name="article-create"),
+    path("article/<int:id>/edit/", views.article_edit__view, name="article-edit"),
+    path("article/<int:id>/delete/", views.article_delete__view, name="article-delete"),
 ]
 
 if settings.DEBUG:

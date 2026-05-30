@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Register{% endblock page_title %}
+{% block body %}
+
+    <div class="card">
+        <h2>Register</h2>
+        <form action="{% url 'account:register' %}"  method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+{% endblock body %}

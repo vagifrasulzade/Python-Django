@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Articles{% endblock page_title %}
+{% block body %}
+
+    <div class="container">
+        <h2>Məqalələr</h2>
+
+        {% if articles %}
+            {% for article in articles %}
+                <div class="card">
+                    <div class="card-meta">
+                        <span>{{ article.author }}</span>
+                        <span>{{ article.category.name }}</span>
+                        <span>{{ article.created_date|date:"d M Y" }}</span>
+                    </div>
+                    <h3><a href="{% url 'article-detail' article.id %}">{{ article.title }}</a></h3>
+                    <p>{{ article.content|truncatechars:150 }}</p>
+                    <div class="tags">
+                        {% for tag in article.tags.all %}
+                            <span class="tag">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty">Hələki heç bir məqalə əlavə olunmayıb.</p>
+        {% endif %}
+    </div>
+
+{% endblock body %}

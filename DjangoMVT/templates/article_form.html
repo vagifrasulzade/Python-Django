@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Məqalə əlavə et{% endblock page_title %}
+
+{% block body %}
+<div class="container">
+    <h2>Məqalə əlavə et</h2>
+    <div class="card">
+        <form method="post">
+            {% csrf_token %}
+            <p>
+                <label>{{ form.title.label }}</label>
+                {{ form.title }}
+            </p>
+            <p>
+                <label>{{ form.content.label }}</label>
+                {{ form.content }}
+            </p>
+            <p>
+                <label>{{ form.category.label }}</label>
+                {{ form.category }}
+            </p>
+            <div class="form-tags">
+                <label>{{ form.tags.label }}</label>
+                <div class="checkbox-group">
+                    {{ form.tags }}
+                </div>
+            </div>
+            <button type="submit">Əlavə et</button>
+        </form>
+    </div>
+</div>
+{% endblock body %}

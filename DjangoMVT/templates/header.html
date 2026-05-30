@@ -1,0 +1,14 @@
+<header>
+    <nav>`
+        <a href="{% url 'home' %}">Ana səhifə</a>
+        <a href="{% url 'articles' %}">Məqalələr</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'add-article' %}">Məqalə əlavə et</a>
+        <a href="{% url 'account:password_change' %}"><ion-icon name="key-outline"></ion-icon></a>
+        <a href="{% url 'account:logout' %}"><ion-icon name="log-out-outline"></ion-icon></a>
+        {% else %}
+            <a href="{% url 'account:login' %}">Login</a>
+            <a href="{% url 'account:register' %}">Register</a>
+        {% endif %}
+    </nav>
+</header>

@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block page_title %}{{ article.title }}{% endblock page_title %}
+
+{% block body %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-meta">
+            <span>{{ article.author }}</span>
+            <span>{{ article.category.name }}</span>
+            <span>{{ article.created_date|date:"d M Y" }}</span>
+        </div>
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.content }}</p>
+
+        <div class="tags">
+            {% for tag in article.tags.all %}
+                <span class="tag">{{ tag.name }}</span>
+            {% empty %}
+                <span class="empty">Tag yoxdur</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Şərhlər</h3>
+        {% for comment in article.comments.all %}
+            <div class="comment">
+                <strong>{{ comment.author }}</strong>
+                <p>{{ comment.content }}</p>
+            </div>
+        {% empty %}
+            <p class="empty">Hələ şərh yoxdur.</p>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <h3>Şərh yaz</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Göndər</button>
+        </form>
+    </div>
+</div>
+
+{% endblock body %}
